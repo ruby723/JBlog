@@ -15,4 +15,9 @@ public class UserService {
 	public void join(UserVo vo) {
 		userRepository.join(vo);
 	}
+
+	public UserVo getUser(String id, String password) {
+		
+		return userRepository.getUser(id,password);
+	}
 }

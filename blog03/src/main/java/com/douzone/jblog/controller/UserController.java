@@ -9,37 +9,37 @@ import com.douzone.jblog.service.UserService;
 import com.douzone.jblog.vo.UserVo;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping(value="join",method=RequestMethod.POST)
-	public String join(UserVo vo) {
+	@RequestMapping("/join")
+	public String join() {
 		
-		userService.join(vo);
 		return "user/join";
 	}
 	
-	@RequestMapping("joinsuccess")
-	public String joinsuccess() {
+	@RequestMapping(value="/joinsuccess",method=RequestMethod.POST)
+	public String joinsuccess(UserVo vo) {
+		userService.join(vo);
 		
 		return "user/joinsuccess";
 	}
 	
-	@RequestMapping("login")
+	@RequestMapping("/login")
 	public String login() {
 		
 		return "user/login";
 	}
 	
-	@RequestMapping("loginsuccess")
+	@RequestMapping("/loginsuccess")
 	public String loginsuccess() {
-		
 		return "redirect:/";
 	}
 	
-	@RequestMapping("logout")
+	@RequestMapping("/logout")
 	public String logout() {
 		
 		return "redirect:/";
