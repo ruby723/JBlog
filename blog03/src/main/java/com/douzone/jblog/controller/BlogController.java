@@ -1,5 +1,7 @@
 package com.douzone.jblog.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.douzone.jblog.security.AuthUser;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.vo.BlogVo;
-import com.douzone.jblog.vo.UserVo;
+import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.PostVo;
 
 @Controller
 @RequestMapping("/blog/{id:(?!assets).*}")
@@ -22,12 +24,13 @@ public class BlogController {
 	BlogService blogService;
 	
 	@RequestMapping("")
-	public String index(String id,Model model) {
+	public String index(@PathVariable("id")String id,Model model) {
 		
 		BlogVo vo = blogService.findById(id);
 		
 		model.addAttribute("id",id);
 		model.addAttribute("blogvo",vo);
+		
 		return "/blog/main";
 	}
 	
@@ -35,11 +38,13 @@ public class BlogController {
 	@RequestMapping({"/{pathNo1}","/{pathNo1}/{pathNo2}"})
 	public String index(
 			@PathVariable("id") String id,
-			@PathVariable("pathNo1") Optional<Long> pathNo1,
-			@PathVariable("pathNo2") Optional<Long> pathNo2) {
+			@PathVariable("pathNo1") Optional<Integer> pathNo1,
+			@PathVariable("pathNo2") Optional<Integer> pathNo2,Model model) {
 		
-		Long categoryNo = 0L;
-		Long postNo = 0L;
+		BlogVo blogvo = blogService.findById(id);
+		
+		int categoryNo = 0;
+		int postNo = 0;
 		
 		if(pathNo2.isPresent()) {
 			categoryNo = pathNo1.get();
@@ -48,9 +53,15 @@ public class BlogController {
 			categoryNo = pathNo1.get();
 		}
 		
-		System.out.println("id:" +id);
-		System.out.println("category:"+categoryNo);
-		System.out.println("post:"+postNo);
+		List<CategoryVo> categorylist = new ArrayList<>();
+		categorylist = blogService.categoryList(id);
+		List<PostVo> postlist = new ArrayList<>();
+		postlist = blogService.postList(categoryNo);
+		
+		model.addAttribute("id",id);
+		model.addAttribute("blogvo",blogvo);
+		model.addAttribute("category",categorylist);
+		model.addAttribute("post",postlist);
 		
 		return "/blog/main";
 	}

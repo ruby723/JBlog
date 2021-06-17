@@ -4,13 +4,26 @@
 
 	<insert id="insert" parameterType="uservo">
 		<![CDATA[
-		insert into user values(#{id},#{name},#{password},now());
+			insert into user values(#{id},#{name},#{password},now());
 		]]>
 	</insert>
 	
 	<select id="findById" parameterType="string" resultType="blogvo">
 		<![CDATA[
-		select * from blog where user_id=#{id}
+			select * from blog where user_id=#{id}
 		]]>
 	</select>
+	
+	<select id="categoryList" parameterType="string" resultType="categoryvo">
+		<![CDATA[
+			select * from category where blog_user_id=#{id}
+		]]>
+	</select>
+	
+	<select id="postList" parameterType="_int" resultType="postvo">
+		<![CDATA[
+			select * from post where category_no=#{category}
+		]]>
+	</select>
+	
 </mapper>
