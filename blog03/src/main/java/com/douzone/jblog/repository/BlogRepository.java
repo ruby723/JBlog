@@ -30,4 +30,41 @@ public class BlogRepository {
 		List<PostVo> list = sqlSession.selectList("blog.postList",category);
 		return list;
 	}
+
+	public PostVo findPost(int i) {
+		
+		return sqlSession.selectOne("blog.findPost",i);
+	}
+
+	public int categoryMin(String id) {
+		
+		return sqlSession.selectOne("blog.categoryMin",id);
+	}
+
+	public int postMin(int categoryNo) {
+		
+		return sqlSession.selectOne("blog.postMin",categoryNo);
+	}
+
+	public void update(BlogVo blogvo) {
+		
+		sqlSession.update("blog.update",blogvo);
+		
+	}
+
+	public void categoryInsert(CategoryVo vo) {
+		
+		sqlSession.insert("blog.categoryInsert",vo);
+		
+	}
+
+	public void categoryDelete(int no) {
+		
+		sqlSession.delete("blog.categoryDelete",no);
+	}
+
+	public void write(PostVo vo) {
+		sqlSession.insert("blog.write",vo);
+		
+	}
 }

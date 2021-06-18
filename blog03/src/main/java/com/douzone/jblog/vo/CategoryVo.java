@@ -2,7 +2,7 @@ package com.douzone.jblog.vo;
 
 public class CategoryVo {
 	private int no;
-	private String title;
+	private String name;
 	private String desc;
 	private String reg_date;
 	private String user_id;
@@ -13,12 +13,7 @@ public class CategoryVo {
 	public void setNo(int no) {
 		this.no = no;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	
 	public String getDesc() {
 		return desc;
 	}
@@ -37,10 +32,15 @@ public class CategoryVo {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	@Override
 	public String toString() {
-		return "CategoryVo [no=" + no + ", title=" + title + ", desc=" + desc + ", reg_date=" + reg_date + ", user_id="
+		return "CategoryVo [no=" + no + ", name=" + name + ", desc=" + desc + ", reg_date=" + reg_date + ", user_id="
 				+ user_id + "]";
 	}
 	

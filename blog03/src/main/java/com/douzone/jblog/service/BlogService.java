@@ -1,6 +1,7 @@
 package com.douzone.jblog.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,34 @@ public class BlogService {
 		List<PostVo> list = blogRepository.postList(category);
 		return list;
 	}
+
+	public PostVo findPost(int categoryNo,int postNo) {
+		
+		PostVo vo = blogRepository.findPost(postNo);
+
+		return vo;
+	}
+
+	public void update(BlogVo blogvo) {
+		
+		blogRepository.update(blogvo);
+	}
+
+	public void categoryInsert(CategoryVo vo) {
+		
+		blogRepository.categoryInsert(vo);
+		
+	}
+
+	public void categoryDelete(int no) {
+		
+		blogRepository.categoryDelete(no);
+	}
+
+	public void write(PostVo vo) {
+		
+		blogRepository.write(vo);
+		
+	}
+
 }

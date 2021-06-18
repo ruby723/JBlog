@@ -26,4 +26,45 @@
 		]]>
 	</select>
 	
+	<select id="findPost" parameterType="_int" resultType="postvo">
+		<![CDATA[
+			select * from post where no=#{i}
+		]]>
+	</select>
+	
+	<select id="categoryMin" parameterType="string" resultType="_int">
+		<![CDATA[
+			select min(no) from category where blog_user_id=#{id}
+		]]>
+	</select>
+	
+	<select id="postMin" parameterType="_int" resultType="_int">
+		<![CDATA[
+			select min(no) from post where category_no=#{categoryNo}
+		]]>
+	</select>
+	
+	<update id="update" parameterType="blogvo">
+		<![CDATA[
+			update blog set title=#{title} ,logo=#{logo} where user_id=#{user_id};
+		]]>
+	</update>
+	
+	<insert id="categoryInsert" parameterType="categoryvo">
+		<![CDATA[
+			insert into category values(null,#{name},#{desc},now(),#{user_id});
+		]]>
+	</insert>
+	
+	<delete id="categoryDelete" parameterType="_int">
+		<![CDATA[
+			delete from category where no=#{no}
+		]]>
+	</delete>
+	
+	<insert id="write" parameterType="postvo">
+		<![CDATA[
+			insert into post values(null,#{title},now(),#{contents},#{category_no});
+		]]>
+	</insert>
 </mapper>

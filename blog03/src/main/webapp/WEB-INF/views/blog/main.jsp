@@ -16,31 +16,35 @@
 			<ul>
 				<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
 				<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
+				<li><a href="${pageContext.request.contextPath}/blog/${id}/admin/basic/${id}">블로그 관리</a></li>
 			</ul>
 		</div>
 		<div id="wrapper">
 			<div id="content">
 				<div class="blog-content">
-					<h4>${post.title }</h4>
-					<p>${post.contents }<p>
+					<h4>${postvo.title }</h4>
+					<p>${postvo.contents }<p>
 				</div>
 				<ul class="blog-list">
-					<li><a href="">${post.title }</a> <span>${post.reg_date }</span>	</li>
+					<c:forEach items="${postlist }" var="i" varStatus="status">
+						<li><a href="${pageContext.request.contextPath}/blog/${id}/${i.category_no}/${i.no}">${i.title }</a> <span>${i.reg_date }</span>	</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>
 
 		<div id="extra">
 			<div class="blog-logo">
-				<img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg">
+				<img src="${pageContext.request.contextPath}/${blogvo.logo}">
 			</div>
 		</div>
 
 		<div id="navigation">
 			<h2>카테고리</h2>
 			<ul>
-				<li><a href="">${category.title }</a></li>
+				<c:forEach items="${categorylist }" var="i" varStatus="status">
+					<li><a href="${pageContext.request.contextPath}/blog/${id}/${i.no}">${i.name }</a></li>
+				</c:forEach>
 			</ul>
 		</div>
 		

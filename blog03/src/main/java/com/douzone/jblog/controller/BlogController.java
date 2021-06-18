@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.douzone.jblog.service.BlogService;
+import com.douzone.jblog.service.FileUploadService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
 import com.douzone.jblog.vo.PostVo;
@@ -22,20 +24,10 @@ public class BlogController {
 	
 	@Autowired
 	BlogService blogService;
+	@Autowired
+	FileUploadService fileUploadService;
 	
-	@RequestMapping("")
-	public String index(@PathVariable("id")String id,Model model) {
-		
-		BlogVo vo = blogService.findById(id);
-		
-		model.addAttribute("id",id);
-		model.addAttribute("blogvo",vo);
-		
-		return "/blog/main";
-	}
-	
-
-	@RequestMapping({"/{pathNo1}","/{pathNo1}/{pathNo2}"})
+	@RequestMapping({"","/{pathNo1}","/{pathNo1}/{pathNo2}"})
 	public String index(
 			@PathVariable("id") String id,
 			@PathVariable("pathNo1") Optional<Integer> pathNo1,
@@ -53,6 +45,8 @@ public class BlogController {
 			categoryNo = pathNo1.get();
 		}
 		
+		PostVo postvo = blogService.findPost(categoryNo,postNo);
+		
 		List<CategoryVo> categorylist = new ArrayList<>();
 		categorylist = blogService.categoryList(id);
 		List<PostVo> postlist = new ArrayList<>();
@@ -60,17 +54,98 @@ public class BlogController {
 		
 		model.addAttribute("id",id);
 		model.addAttribute("blogvo",blogvo);
-		model.addAttribute("category",categorylist);
-		model.addAttribute("post",postlist);
+		model.addAttribute("categorylist",categorylist);
+		model.addAttribute("postlist",postlist);
+		model.addAttribute("postvo",postvo);
 		
 		return "/blog/main";
 	}
-	
-	@ResponseBody
-	@RequestMapping("/admin/basic")
-	public String adminBasic(@PathVariable("id") String id) {
-		System.out.println(id);
-		return "BlogController.adminBasic";
+
+	@RequestMapping(value="/admin/basic/{id}", method=RequestMethod.GET)
+	public String adminBasic(@PathVariable("id")String id, Model model) {
 		
+		BlogVo blogvo = blogService.findById(id);
+		
+		model.addAttribute("id",id);
+		model.addAttribute("blogvo",blogvo);
+		
+		return "/blog/admin/basic";
 	}
+	
+	@RequestMapping(value="/admin/update",method= {RequestMethod.POST,RequestMethod.GET})
+	public String update(@PathVariable("id")String id,BlogVo blogvo,MultipartFile file,Model model) {
+		
+		String url = fileUploadService.restore(file);
+		blogvo.setLogo(url);
+		blogvo.setUser_id(id);
+
+		blogService.update(blogvo);
+		
+		model.addAttribute("id", id);
+		model.addAttribute("blogvo", blogvo);
+			
+		return "/blog/admin/basic";
+	}
+	
+	@RequestMapping(value="/admin/category/{id}",method=RequestMethod.GET)
+	public String category(@PathVariable("id")String id,Model model) {
+		
+		List<CategoryVo> vo= new ArrayList<>();
+		vo = blogService.categoryList(id);
+		
+		model.addAttribute("id", id);
+		model.addAttribute("vo",vo);
+		
+		return "blog/admin/category";
+	}
+	
+	@RequestMapping(value="/admin/category/update",method= {RequestMethod.GET,RequestMethod.POST})
+	public String categoryInsert(@PathVariable("id")String id,CategoryVo vo,Model model) {
+		
+		vo.setUser_id(id);
+
+		blogService.categoryInsert(vo);
+		
+		List<CategoryVo> list= new ArrayList<>();
+		list = blogService.categoryList(id);
+		
+		model.addAttribute("id", id);
+		model.addAttribute("vo",list);
+		return "blog/admin/category";
+	}
+	
+	@RequestMapping(value="/admin/category/delete/{no}",method= {RequestMethod.GET,RequestMethod.POST})
+	public String categoryDelete(@PathVariable("id")String id, @PathVariable("no")int no,Model model) {
+		
+		blogService.categoryDelete(no);
+		
+		List<CategoryVo> list= new ArrayList<>();
+		list = blogService.categoryList(id);
+		
+		model.addAttribute("id", id);
+		model.addAttribute("vo",list);
+		return "blog/admin/category";
+	}
+	
+	@RequestMapping(value="/admin/write/{id}",method=RequestMethod.GET)
+	public String write(@PathVariable("id")String id,Model model) {
+		
+		List<CategoryVo> list= new ArrayList<>();
+		list = blogService.categoryList(id);
+		
+		model.addAttribute("id", id);
+		model.addAttribute("list",list);
+		return "blog/admin/write";
+	}
+	
+	@RequestMapping(value="/admin/write/{id}/insert",method= {RequestMethod.GET,RequestMethod.POST})
+	public String writeInsert(@PathVariable("id")String id,PostVo vo,Model model) {
+		
+		blogService.write(vo);
+		
+		//model.addAttribute("id", id);
+		
+		return "redirect:/blog/"+id;
+	}
+
 }

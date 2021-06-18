@@ -26,21 +26,22 @@
 					<li><a href="">카테고리</a></li>
 					<li class="selected">글작성</li>
 				</ul>
-				<form action="" method="post">
+				<form action="${pageContext.request.contextPath}/blog/${id}/admin/write/${id }/insert" method="post">
 			      	<table class="admin-cat-write">
 			      		<tr>
 			      			<td class="t">제목</td>
 			      			<td>
 			      				<input type="text" size="60" name="title">
-				      			<select name="category">
-				      				<option>미분류</option>
-				      				<option>자바</option>
+				      			<select name="category_no">
+				      				<c:forEach items="${list }" var="i" varStatus="status">
+				      					<option value="${i.no} ">${i.name }</option>
+				      				</c:forEach>
 				      			</select>
 				      		</td>
 			      		</tr>
 			      		<tr>
 			      			<td class="t">내용</td>
-			      			<td><textarea name="content"></textarea></td>
+			      			<td><textarea name="contents"></textarea></td>
 			      		</tr>
 			      		<tr>
 			      			<td>&nbsp;</td>
