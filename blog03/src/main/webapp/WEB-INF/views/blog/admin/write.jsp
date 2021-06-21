@@ -19,7 +19,8 @@
 			<div id="content" class="full-screen">
 				<jsp:include page="/WEB-INF/views/blog/admin/include/admin-menu.jsp" />
 				
-				<form action="${pageContext.request.contextPath}/blog/admin/write/insert" method="post">
+				<form action="${pageContext.request.contextPath}/blog/${id }/admin/write/insert" method="post">
+				<input type="hidden" name="id" value="${id }" />
 			      	<table class="admin-cat-write">
 			      		<tr>
 			      			<td class="t">제목</td>

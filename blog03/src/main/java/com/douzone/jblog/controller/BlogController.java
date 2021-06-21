@@ -95,7 +95,7 @@ public class BlogController {
 	
 	// 블로그 카테고리 관리
 	@Auth
-	@RequestMapping(value="/admin/category/{id}",method=RequestMethod.GET)
+	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
 	public String category(@PathVariable("id")String id,Model model) {
 		
 		BlogVo blogvo = blogService.findById(id);
@@ -111,8 +111,8 @@ public class BlogController {
 	}
 	
 	@Auth
-	@RequestMapping(value="/admin/category/update/{id}",method= {RequestMethod.GET,RequestMethod.POST})
-	public String categoryInsert(@PathVariable("id")String id,CategoryVo vo,Model model) {
+	@RequestMapping(value="/admin/category/update",method=RequestMethod.POST)
+	public String categoryInsert(String id,CategoryVo vo,Model model) {
 		
 		vo.setUser_id(id);
 
@@ -125,12 +125,12 @@ public class BlogController {
 		model.addAttribute("id", id);
 		model.addAttribute("vo",list);
 		model.addAttribute("blogvo", blogvo);
-		return "redirect:/blog/admin/category/"+id;
+		return "redirect:/blog/"+id+"/admin/category";
 	}
 	
 	@Auth
 	@RequestMapping(value="/admin/category/delete/{no}",method= {RequestMethod.GET,RequestMethod.POST})
-	public String categoryDelete(@PathVariable("id")String id, @PathVariable("no")int no,Model model) {
+	public String categoryDelete(String id, @PathVariable("no")int no,Model model) {
 		
 		blogService.categoryDelete(no);
 		BlogVo blogvo = blogService.findById(id);
@@ -141,12 +141,12 @@ public class BlogController {
 		model.addAttribute("id", id);
 		model.addAttribute("vo",list);
 		model.addAttribute("blogvo", blogvo);
-		return "redirect:/blog/admin/category/"+id;
+		return "redirect:/blog/"+id+"/admin/category";
 	}
 	
 	// 블로그 글쓰기 관리
 	@Auth
-	@RequestMapping(value="/admin/write/{id}",method=RequestMethod.GET)
+	@RequestMapping("/admin/write")
 	public String write(@PathVariable("id")String id,Model model) {
 		
 		List<CategoryVo> list= new ArrayList<>();
@@ -158,12 +158,13 @@ public class BlogController {
 	}
 	
 	@Auth
-	@RequestMapping(value="/admin/write/{id}/insert",method= {RequestMethod.GET,RequestMethod.POST})
-	public String writeInsert(@PathVariable("id")String id,PostVo vo,Model model) {
+	@RequestMapping(value="/admin/write/insert",method=RequestMethod.POST)
+	public String writeInsert(String id,PostVo vo,Model model) {
 		
+		// System.out.println(vo);
 		blogService.write(vo);
 		
-		//model.addAttribute("id", id);
+		model.addAttribute("id", id);
 		
 		return "redirect:/blog/"+id;
 	}
