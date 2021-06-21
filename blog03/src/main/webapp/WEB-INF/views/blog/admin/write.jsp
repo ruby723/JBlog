@@ -12,21 +12,14 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>Spring 이야기</h1>
-			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
-			</ul>
+		<h1>${blogvo.title }</h1>
+			<jsp:include page="/WEB-INF/views/blog/admin/include/header.jsp" />
 		</div>
 		<div id="wrapper">
 			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li><a href="">기본설정</a></li>
-					<li><a href="">카테고리</a></li>
-					<li class="selected">글작성</li>
-				</ul>
-				<form action="${pageContext.request.contextPath}/blog/${id}/admin/write/${id }/insert" method="post">
+				<jsp:include page="/WEB-INF/views/blog/admin/include/admin-menu.jsp" />
+				
+				<form action="${pageContext.request.contextPath}/blog/admin/write/insert" method="post">
 			      	<table class="admin-cat-write">
 			      		<tr>
 			      			<td class="t">제목</td>

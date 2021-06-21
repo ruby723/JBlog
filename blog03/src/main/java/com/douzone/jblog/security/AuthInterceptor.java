@@ -50,9 +50,19 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		// 7. 권한(Authorization) 체크를 위해서 @Auth의 role 가져오기
-		String id = auth.id();
+
 		String authId = authUser.getId();
 		
+		// 추가
+		String url = request.getRequestURI();
+		String list[]=url.split("/");
+		String urlid=list[3];
+		// System.out.println(urlid);
+		// System.out.println(authId.equals(urlid));
+		if(!authId.equals(urlid)) {
+			response.sendRedirect(request.getContextPath()+"/user/login");
+			return false;
+		}
 		
 		return true;
 	}

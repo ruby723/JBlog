@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.douzone.jblog.security.Auth;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.FileUploadService;
 import com.douzone.jblog.vo.BlogVo;
@@ -61,7 +62,9 @@ public class BlogController {
 		return "/blog/main";
 	}
 
-	@RequestMapping(value="/admin/basic/{id}", method=RequestMethod.GET)
+	// 블로그 관리
+	@Auth
+	@RequestMapping(value="/admin/basic", method=RequestMethod.GET)
 	public String adminBasic(@PathVariable("id")String id, Model model) {
 		
 		BlogVo blogvo = blogService.findById(id);
@@ -72,38 +75,48 @@ public class BlogController {
 		return "/blog/admin/basic";
 	}
 	
-	@RequestMapping(value="/admin/update",method= {RequestMethod.POST,RequestMethod.GET})
-	public String update(@PathVariable("id")String id,BlogVo blogvo,MultipartFile file,Model model) {
+	@Auth
+	@RequestMapping(value="/admin/update",method=RequestMethod.POST)
+	public String update(String id,BlogVo blogvo,MultipartFile file,Model model) {
 		
+		BlogVo vo = blogService.findById(id);
 		String url = fileUploadService.restore(file);
-		blogvo.setLogo(url);
-		blogvo.setUser_id(id);
+		vo.setLogo(url);
+		vo.setUser_id(id);
+		vo.setTitle(blogvo.getTitle());
 
-		blogService.update(blogvo);
+		blogService.update(vo);
 		
 		model.addAttribute("id", id);
-		model.addAttribute("blogvo", blogvo);
+		model.addAttribute("vo", vo);
 			
-		return "/blog/admin/basic";
+		return "redirect:/blog/"+id+"/admin/basic";
 	}
 	
+	// 블로그 카테고리 관리
+	@Auth
 	@RequestMapping(value="/admin/category/{id}",method=RequestMethod.GET)
 	public String category(@PathVariable("id")String id,Model model) {
+		
+		BlogVo blogvo = blogService.findById(id);
 		
 		List<CategoryVo> vo= new ArrayList<>();
 		vo = blogService.categoryList(id);
 		
 		model.addAttribute("id", id);
 		model.addAttribute("vo",vo);
+		model.addAttribute("blogvo", blogvo);
 		
 		return "blog/admin/category";
 	}
 	
-	@RequestMapping(value="/admin/category/update",method= {RequestMethod.GET,RequestMethod.POST})
+	@Auth
+	@RequestMapping(value="/admin/category/update/{id}",method= {RequestMethod.GET,RequestMethod.POST})
 	public String categoryInsert(@PathVariable("id")String id,CategoryVo vo,Model model) {
 		
 		vo.setUser_id(id);
 
+		BlogVo blogvo = blogService.findById(id);
 		blogService.categoryInsert(vo);
 		
 		List<CategoryVo> list= new ArrayList<>();
@@ -111,22 +124,28 @@ public class BlogController {
 		
 		model.addAttribute("id", id);
 		model.addAttribute("vo",list);
-		return "blog/admin/category";
+		model.addAttribute("blogvo", blogvo);
+		return "redirect:/blog/admin/category/"+id;
 	}
 	
+	@Auth
 	@RequestMapping(value="/admin/category/delete/{no}",method= {RequestMethod.GET,RequestMethod.POST})
 	public String categoryDelete(@PathVariable("id")String id, @PathVariable("no")int no,Model model) {
 		
 		blogService.categoryDelete(no);
+		BlogVo blogvo = blogService.findById(id);
 		
 		List<CategoryVo> list= new ArrayList<>();
 		list = blogService.categoryList(id);
 		
 		model.addAttribute("id", id);
 		model.addAttribute("vo",list);
-		return "blog/admin/category";
+		model.addAttribute("blogvo", blogvo);
+		return "redirect:/blog/admin/category/"+id;
 	}
 	
+	// 블로그 글쓰기 관리
+	@Auth
 	@RequestMapping(value="/admin/write/{id}",method=RequestMethod.GET)
 	public String write(@PathVariable("id")String id,Model model) {
 		
@@ -138,6 +157,7 @@ public class BlogController {
 		return "blog/admin/write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/admin/write/{id}/insert",method= {RequestMethod.GET,RequestMethod.POST})
 	public String writeInsert(@PathVariable("id")String id,PostVo vo,Model model) {
 		

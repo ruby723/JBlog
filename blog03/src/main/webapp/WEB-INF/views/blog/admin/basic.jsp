@@ -12,21 +12,15 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>${blogvo.title }</h1>
-			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
-			</ul>
+		<h1>${blogvo.title }</h1>
+			<jsp:include page="/WEB-INF/views/blog/admin/include/header.jsp" />
 		</div>
 		<div id="wrapper">
 			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li class="selected">기본설정</li>
-					<li><a href="${pageContext.request.contextPath}/blog/${id}/admin/category/${id}">카테고리</a></li>
-					<li><a href="${pageContext.request.contextPath}/blog/${id}/admin/write/${id}">글작성</a></li>
-				</ul>
+				<jsp:include page="/WEB-INF/views/blog/admin/include/admin-menu.jsp" />
+				
 				<form action="${pageContext.request.contextPath}/blog/${id}/admin/update" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="id" value="${id }" />
 	 		      	<table class="admin-config">
 			      		<tr>
 			      			<td class="t">블로그 제목</td>

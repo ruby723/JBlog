@@ -11,14 +11,10 @@
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>${blogvo.title }</h1>
-			<ul>
-				<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
-				<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
-				<li><a href="${pageContext.request.contextPath}/blog/${id}/admin/basic/${id}">블로그 관리</a></li>
-			</ul>
-		</div>
+	<div id="header">
+		<h1>${blogvo.title }</h1>
+		<jsp:include page="/WEB-INF/views/blog/admin/include/header.jsp" />
+	</div>
 		<div id="wrapper">
 			<div id="content">
 				<div class="blog-content">

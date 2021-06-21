@@ -11,21 +11,14 @@
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>Spring 이야기</h1>
-			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
-			</ul>
-		</div>
-		<div id="wrapper">
-			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li><a href="">기본설정</a></li>
-					<li class="selected">카테고리</li>
-					<li><a href="">글작성</a></li>
-				</ul>
+	<div id="header">
+		<h1>${blogvo.title }</h1>
+		<jsp:include page="/WEB-INF/views/blog/admin/include/header.jsp" />
+	</div>
+	<div id="wrapper">
+		<div id="content" class="full-screen">
+			<jsp:include page="/WEB-INF/views/blog/admin/include/admin-menu.jsp" />
+				
 		      	<table class="admin-cat">
 		      		<tr>
 		      			<th>번호</th>
@@ -48,6 +41,7 @@
       	
       			<h4 class="n-c">새로운 카테고리 추가</h4>
       			<form method="post" action="${pageContext.request.contextPath}/blog/${id}/admin/category/update">
+      			<input type="hidden" name="id" value="${id }" />
 		      	<table id="admin-cat-add">
 		      		<tr>
 		      			<td class="t">카테고리명</td>
