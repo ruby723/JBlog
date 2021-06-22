@@ -103,9 +103,13 @@ public class BlogController {
 		List<CategoryVo> vo= new ArrayList<>();
 		vo = blogService.categoryList(id);
 		
+		List<Integer> count= new ArrayList<>();
+		count = blogService.count(id);
+		
 		model.addAttribute("id", id);
 		model.addAttribute("vo",vo);
 		model.addAttribute("blogvo", blogvo);
+		model.addAttribute("count",count);
 		
 		return "blog/admin/category";
 	}

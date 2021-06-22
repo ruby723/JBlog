@@ -28,13 +28,15 @@
 		      			<th>삭제</th>      			
 		      		</tr>
 		      		<c:forEach items="${vo }" var="i" varStatus="status">
+		      		<c:forEach items="${count }" var = "j" varStatus="status">
 						<tr>
 							<td>${i.no }</td>
 							<td>${i.name }</td>
-							<td>10</td>
+							<td>${count }</td>
 							<td>${i.desc }</td>
 							<td><a href="${pageContext.servletContext.contextPath }/blog/${id }/admin/category/delete/${i.no}" class="del"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></td>
 						</tr>  
+					</c:forEach>
 					</c:forEach>
 					  
 				</table>

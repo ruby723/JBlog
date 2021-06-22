@@ -67,4 +67,15 @@ public class BlogRepository {
 		sqlSession.insert("blog.write",vo);
 		
 	}
+	
+	public int count(int no) {
+		
+		return sqlSession.selectOne("blog.count",no);
+	}
+	
+	public List<Integer> categoryNo(String id) {
+		
+		 List<Integer> list = sqlSession.selectList("blog.categoryNo",id);
+		 return list;
+	}
 }

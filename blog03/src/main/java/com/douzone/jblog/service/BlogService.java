@@ -1,5 +1,6 @@
 package com.douzone.jblog.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,19 @@ public class BlogService {
 		
 		blogRepository.write(vo);
 		
+	}
+	
+	public List<Integer> count(String id) {
+		
+		List<Integer> categoryNo = new ArrayList<>();
+		categoryNo = blogRepository.categoryNo(id);
+		
+		List<Integer> count = new ArrayList<>();
+		
+		for(int i=0;i<categoryNo.size();i++) {
+			count.add(blogRepository.count(categoryNo.get(i)));
+		}
+		return count;
 	}
 
 }

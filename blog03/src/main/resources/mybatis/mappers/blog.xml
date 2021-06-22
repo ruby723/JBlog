@@ -67,4 +67,16 @@
 			insert into post values(null,#{title},now(),#{contents},#{category_no});
 		]]>
 	</insert>
+	
+	<select id="count" parameterType="_int" resultType="_int">
+		<![CDATA[
+			select count(*) from post where category_no=#{no}
+		]]>
+	</select>
+	
+	<select id="categoryNo" parameterType="string" resultType="_int">
+		<![CDATA[
+			select no from category where blog_user_id=#{id}
+		]]>
+	</select>
 </mapper>
