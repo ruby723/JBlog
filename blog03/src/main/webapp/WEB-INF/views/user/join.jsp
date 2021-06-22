@@ -62,30 +62,32 @@ $(function(){
 			<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
 			<li><a href="${pageContext.request.contextPath}/blog">내블로그</a></li>
 		</ul>
-		<form:form class="join-form" id="join-form" method="post" modelAttribute="userVo" action="${pageContext.request.contextPath}/user/joinsuccess">
+		<form:form  class="join-form" 
+					id="join-form" method="post" 
+					modelAttribute="userVo" 
+					action="${pageContext.request.contextPath}/user/join">
+					
 			<label class="block-label" for="name">이름</label>
+			
 			<form:input path="name" />
-			<p style="color:#f00; text-align:left; padding-left:0">
-				<spring:hasBindErrors name="userVo">
-					<c:if test="${errors.hasFieldErrors('name') }">
-						<spring:message code="${errors.getFieldError('name').codes[0] }" />
-					 </c:if>
-				</spring:hasBindErrors>
-			</p>
+			
+			<div style="color:#f00; text-align:left; padding-left:0"><form:errors path="name"/></div>
 			
 			<label class="block-label" for="blog-id">아이디</label>
-			<form:input path="id" />
-			<input id="btn-check" type="button" value="id 중복체크">
+			<form:input path="id"/>
+			
+			<form:button />
+			<input type="button" id="btn-check"value="중복체크">
 			<img id="img-check" style="display: none;" src="${pageContext.request.contextPath}/assets/images/check.png">
-			<p style="color:#f00; text-align:left; padding-left:0">
+			<div style="color:#f00; text-align:left; padding-left:0">
 				<form:errors path="id" />
-			</p>
+			</div>
 					
-			<label class="block-label" for="password">패스워드</label>
-			<form:input path="password" />
-			<p style="color:#f00; text-align:left; padding-left:0">
+			<label class="block-label" for="password"><spring:message code="user.join.label.password" /></label>
+			<form:password path="password"/>
+			<div style="color:#f00; text-align:left; padding-left:0">
 				<form:errors path="password" />
-			</p>
+			</div>
 					
 			<fieldset>
 				<legend>약관동의</legend>

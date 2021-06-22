@@ -23,6 +23,6 @@ public class UserController {
 		
 		UserVo userVo = userService.getUserById(id);
 		System.out.println(id);
-		return JsonResult.success(userVo ==null);
+		return JsonResult.success(userVo !=null);
 	}
 }

@@ -1,9 +1,16 @@
 package com.douzone.jblog.vo;
 
-public class UserVo {
+import javax.validation.constraints.NotEmpty;
 
+public class UserVo {
+	
+	@NotEmpty
 	private String id;
+	
+	@NotEmpty
 	private String name;
+	
+	@NotEmpty
 	private String password;
 	private String join_date;
 	
