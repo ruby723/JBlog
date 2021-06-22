@@ -152,8 +152,12 @@ public class BlogController {
 		List<CategoryVo> list= new ArrayList<>();
 		list = blogService.categoryList(id);
 		
+		BlogVo blogvo = blogService.findById(id);
+		
 		model.addAttribute("id", id);
 		model.addAttribute("list",list);
+		model.addAttribute("blogvo",blogvo);
+		
 		return "blog/admin/write";
 	}
 	
