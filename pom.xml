@@ -69,5 +69,6 @@
 
 	<modules>
 		<module>blog03</module>
+		<module>blog04</module>
 	</modules>
 </project>
